@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ELITE MOTORS - Brand Collection</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Montserrat:wght@100;200;300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#050505;--bg2:#080808;
+  --gold:#c9a96e;--gold2:#e8d5b0;--gold3:#7a5c2a;
+  --w:#f0ece4;--m:#4a4642;
+  --brd:rgba(201,169,110,0.14);
+}
+html{scroll-behavior:auto;overflow-x:hidden}
+body{background:var(--bg);color:var(--w);font-family:'Montserrat',sans-serif;font-weight:300;overflow-x:hidden;cursor:none}
+::-webkit-scrollbar{width:2px}
+::-webkit-scrollbar-track{background:#000}
+::-webkit-scrollbar-thumb{background:var(--gold3)}
+header{background:rgba(5,5,5,.88);backdrop-filter:blur(28px);border-bottom:1px solid var(--brd);padding:24px 72px;display:flex;justify-content:space-between;align-items:center;position:fixed;top:0;left:0;right:0;z-index:500}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:500;letter-spacing:.38em;text-decoration:none;color:var(--w)}
+.nav-logo b{color:var(--gold);font-weight:500}
+.nav-back{font-size:9.5px;letter-spacing:.3em;text-transform:uppercase;color:rgba(240,236,228,.5);text-decoration:none;display:flex;align-items:center;gap:10px;transition:color .3s}
+.nav-back:hover{color:var(--gold)}
+.container{display:flex;max-width:1600px;margin:120px auto 40px;padding:0 72px;gap:60px}
+.sidebar{width:260px;flex-shrink:0}
+.filter-group{margin-bottom:24px;border-bottom:1px solid var(--brd);padding-bottom:16px}
+.filter-title{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;display:flex;justify-content:space-between}
+.filter-options{display:flex;flex-direction:column;gap:12px}
+.f-opt{display:flex;align-items:center;gap:12px;cursor:pointer;font-size:12px;color:rgba(240,236,228,.7);user-select:none;transition:color .3s}
+.f-opt:hover{color:var(--gold2)}
+.f-opt input{display:none}
+.radio-mock{width:16px;height:16px;border:1px solid rgba(240,236,228,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:border-color .3s}
+.f-opt input:checked + .radio-mock{border-width:4px;border-color:var(--gold)}
+.f-count{color:var(--m);font-size:11px}
+.f-opt.disabled{opacity:.45;pointer-events:none}
+.btn-reset{width:100%;padding:14px;background:transparent;border:1px solid var(--brd);color:var(--w);font-family:'Montserrat',sans-serif;font-size:9.5px;letter-spacing:.3em;text-transform:uppercase;font-weight:400;cursor:pointer;transition:all .3s}
+.btn-reset:hover{border-color:var(--gold);color:var(--bg);background:var(--gold)}
+.main-content{flex-grow:1}
+.page-title{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,4vw,52px);font-weight:300;letter-spacing:.02em}
+.car-list{display:flex;flex-direction:column;gap:140px}
+.car-row{display:flex;align-items:center;gap:80px}
+.car-row:nth-child(even){flex-direction:row-reverse}
+.car-img-wrap{flex:0 0 55%;position:relative;overflow:hidden;height:500px}
+.car-img-wrap img{width:100%;height:100%;object-fit:cover;filter:brightness(.8) saturate(1.1);transition:transform 1.2s cubic-bezier(.16,1,.3,1),filter .8s ease;display:block}
+.car-row:hover .car-img-wrap img{transform:scale(1.06);filter:brightness(.6) saturate(1.2)}
+.car-desc-wrap{flex:1;display:flex;flex-direction:column;justify-content:center}
+.cc-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.cc-tag{font-size:8.5px;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,169,110,.2);padding:6px 14px}
+.cc-name{font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:300;letter-spacing:.02em;margin-bottom:40px;line-height:1.1}
+.cc-specs{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-bottom:40px;border-top:1px solid rgba(240,236,228,.05);border-bottom:1px solid rgba(240,236,228,.05);padding:30px 0}
+.spec-item{display:flex;flex-direction:column;gap:8px}
+.spec-val{font-size:20px;font-weight:400}
+.spec-lbl{font-size:8.5px;letter-spacing:.25em;text-transform:uppercase;color:var(--m)}
+.cc-footer{font-size:11px;color:rgba(240,236,228,.4);line-height:1.8;margin-bottom:40px;max-width:400px}
+.btn-select{align-self:flex-start;background:var(--gold);color:var(--bg);border:none;padding:18px 56px;font-family:'Montserrat',sans-serif;font-size:9.5px;letter-spacing:.35em;text-transform:uppercase;cursor:pointer;transition:background .3s}
+.btn-select:hover{background:var(--gold2)}
+#cur-dot{width:6px;height:6px;background:var(--gold);border-radius:50%;position:fixed;top:0;left:0;z-index:9999;pointer-events:none;transform:translate(-50%,-50%);transition:width .2s,height .2s,opacity .2s}
+#cur-ring{width:38px;height:38px;border:1px solid rgba(201,169,110,.45);border-radius:50%;position:fixed;top:0;left:0;z-index:9998;pointer-events:none;transform:translate(-50%,-50%);transition:width .35s,height .35s,border-color .3s}
+#cur-ring.big{width:64px;height:64px;border-color:rgba(201,169,110,.8)}
+#cur-dot.big{width:0;height:0;opacity:0}
+@media(max-width:1024px){.container{flex-direction:column}.sidebar{width:100%}.car-row,.car-row:nth-child(even){flex-direction:column}.car-img-wrap{flex-basis:auto;width:100%;height:360px}.cc-specs{grid-template-columns:1fr;gap:24px}}
+@media(max-width:640px){header{padding:18px 24px}.container{margin-top:96px;padding:0 24px 24px;gap:32px}.cc-name{font-size:36px;margin-bottom:28px}.btn-select,.btn-reset{width:100%}}
+</style>
+</head>
+<body>
+<div id="cur-dot"></div>
+<div id="cur-ring"></div>
+<header>
+  <a href="index.html" class="nav-logo">ELITE <b>MOTORS</b></a>
+  <a href="index.html" class="nav-back">&larr; Back to Collection</a>
+</header>
+<div class="container">
+  <aside class="sidebar">
+    <div id="filtersRoot"></div>
+    <button class="btn-reset" id="resetFiltersBtn">Reset Filters</button>
+  </aside>
+  <main class="main-content">
+    <div class="page-header" style="justify-content:flex-start;">
+      <h1 class="page-title" id="pageTitle">Brand Models</h1>
+    </div>
+    <div class="car-list" id="carGrid"></div>
+  </main>
+</div>
+<script>
+const db = {
+  'Rolls-Royce': [
+    { name: 'Cullinan', img: 'images/Rolls%20Royce/Cullinan/1.jpg', tags: ['Gasoline', 'All-Wheel Drive', 'Automatic'], accel: '5.2 s', accelSub: 'Acceleration 0 - 100 km/h', power: '420 kW / 571 PS', powerSub: 'Power (kW) / Power (PS)', speed: '250 km/h', speedSub: 'Top speed (Governed)', consumption: 'Fuel consumption combined: 15.0 l/100 km, CO2 emissions: 341 g/km' },
+    { name: 'Phantom', img: 'images/Rolls%20Royce/Phantom/1.jpg', tags: ['Gasoline', 'Rear-Wheel Drive', 'Automatic'], accel: '5.3 s', accelSub: 'Acceleration 0 - 100 km/h', power: '420 kW / 571 PS', powerSub: 'Power (kW) / Power (PS)', speed: '250 km/h', speedSub: 'Top speed (Governed)', consumption: 'Fuel consumption combined: 15.6 l/100 km, CO2 emissions: 356 g/km' },
+    { name: 'Ghost', img: 'images/Rolls%20Royce/Ghost/1.jpg', tags: ['Gasoline', 'All-Wheel Drive', 'Automatic'], accel: '4.8 s', accelSub: 'Acceleration 0 - 100 km/h', power: '420 kW / 571 PS', powerSub: 'Power (kW) / Power (PS)', speed: '250 km/h', speedSub: 'Top speed (Governed)', consumption: 'Fuel consumption combined: 15.2 l/100 km, CO2 emissions: 347 g/km' }
+  ],
+  'Mercedes': [
+    { name: 'Maybach S Class', img: 'images/mercedes/maybach/1.webp', tags: ['Gasoline', 'All-Wheel Drive', 'Automatic'], accel: '4.5 s', accelSub: 'Acceleration 0 - 100 km/h', power: '450 kW / 612 PS', powerSub: 'Power (kW) / Power (PS)', speed: '250 km/h', speedSub: 'Top speed (Governed)', consumption: 'Fuel consumption combined: 13.4 l/100 km, CO2 emissions: 304 g/km' },
+    { name: 'G-Class', img: 'images/mercedes/g-class/1.jpg', tags: ['Gasoline', 'All-Wheel Drive', 'Automatic'], accel: '4.5 s', accelSub: 'Acceleration 0 - 100 km/h', power: '430 kW / 585 PS', powerSub: 'Power (kW) / Power (PS)', speed: '220 km/h', speedSub: 'Top speed', consumption: 'Fuel consumption combined: 16.4 l/100 km, CO2 emissions: 373 g/km' },
+    { name: 'GLS 450d', img: 'images/mercedes/gls450/1.jpg', tags: ['Diesel', 'All-Wheel Drive', 'Automatic'], accel: '6.1 s', accelSub: 'Acceleration 0 - 100 km/h', power: '270 kW / 367 PS', powerSub: 'Power (kW) / Power (PS)', speed: '250 km/h', speedSub: 'Top speed (Governed)', consumption: 'Fuel consumption combined: 8.6 l/100 km, CO2 emissions: 225 g/km' }
+  ],
+  'Ferrari': [
+    { name: 'Purosangue', img: 'images/Ferrari/Purosangue/1.jpg', tags: ['Gasoline', 'All-Wheel Drive', 'Automatic'], accel: '3.3 s', accelSub: 'Acceleration 0 - 100 km/h', power: '533 kW / 725 PS', powerSub: 'Power (kW) / Power (PS)', speed: '310 km/h', speedSub: 'Top speed', consumption: 'Fuel consumption combined: 17.3 l/100 km, CO2 emissions: 393 g/km' },
+    { name: '812 Competizione', img: 'images/Ferrari/812-competizione/1.jpg', tags: ['Gasoline', 'Rear-Wheel Drive', 'Automatic'], accel: '2.85 s', accelSub: 'Acceleration 0 - 100 km/h', power: '610 kW / 830 PS', powerSub: 'Power (kW) / Power (PS)', speed: '340 km/h', speedSub: 'Top speed', consumption: 'Fuel consumption combined: 16.1 l/100 km, CO2 emissions: 366 g/km' },
+    { name: 'LaFerrari', img: 'images/Ferrari/laferrari/1.jpg', tags: ['Hybrid', 'Rear-Wheel Drive', 'Automatic'], accel: '2.4 s', accelSub: 'Acceleration 0 - 100 km/h', power: '708 kW / 963 PS', powerSub: 'Power (kW) / Power (PS)', speed: '350 km/h', speedSub: 'Top speed', consumption: 'Fuel consumption combined: 14.2 l/100 km, CO2 emissions: 330 g/km' },
+    { name: 'SF90', img: 'images/Ferrari/sf90/1.jpg', tags: ['Hybrid', 'All-Wheel Drive', 'Automatic'], accel: '2.5 s', accelSub: 'Acceleration 0 - 100 km/h', power: '735 kW / 1000 PS', powerSub: 'Power (kW) / Power (PS)', speed: '340 km/h', speedSub: 'Top speed', consumption: 'Fuel consumption combined: 6.1 l/100 km, CO2 emissions: 154 g/km' }
+  ],
+  'Lamborghini': [
+    { name: 'Huracan STO', img: 'images/lamborghini/huracan-sto/1.jpg', tags: ['Gasoline', 'Rear-Wheel Drive', 'Automatic'], accel: '3.0 s', accelSub: 'Acceleration 0 - 100 km/h', power: '470 kW / 640 PS', powerSub: 'Power (kW) / Power (PS)', speed: '310 km/h', speedSub: 'Top speed', consumption: 'Fuel consumption combined: 13.9 l/100 km, CO2 emissions: 331 g/km' },
+    { name: 'Urus', img: 'images/lamborghini/urus/1.jpeg', tags: ['Gasoline', 'All-Wheel Drive', 'Automatic'], accel: '3.6 s', accelSub: 'Acceleration 0 - 100 km/h', power: '478 kW / 650 PS', powerSub: 'Power (kW) / Power (PS)', speed: '305 km/h', speedSub: 'Top speed', consumption: 'Fuel consumption combined: 12.7 l/100 km, CO2 emissions: 325 g/km' },
+    { name: 'Aventador SVJ', img: 'images/lamborghini/aventador-svj/1.jpg', tags: ['Gasoline', 'All-Wheel Drive', 'Automatic'], accel: '2.8 s', accelSub: 'Acceleration 0 - 100 km/h', power: '566 kW / 770 PS', powerSub: 'Power (kW) / Power (PS)', speed: '350 km/h', speedSub: 'Top speed', consumption: 'Fuel consumption combined: 17.9 l/100 km, CO2 emissions: 448 g/km' }
+  ],
+  'Porsche': [
+    { name: '911 GT3 RS', img: 'images/porsche/911-gt3-rs/1.jpg', tags: ['Gasoline', 'Rear-Wheel Drive', 'Automatic'], accel: '3.2 s', accelSub: 'Acceleration 0 - 100 km/h', power: '386 kW / 525 PS', powerSub: 'Power (kW) / Power (PS)', speed: '296 km/h', speedSub: 'Top speed', consumption: 'Fuel consumption combined: 13.4 l/100 km, CO2 emissions: 305 g/km' },
+    { name: '911 GT3', img: 'images/porsche/911-gt3/1.jfif', tags: ['Gasoline', 'Rear-Wheel Drive', 'Automatic'], accel: '3.4 s', accelSub: 'Acceleration 0 - 100 km/h', power: '375 kW / 510 PS', powerSub: 'Power (kW) / Power (PS)', speed: '318 km/h', speedSub: 'Top speed', consumption: 'Fuel consumption combined: 13.0 l/100 km, CO2 emissions: 293 g/km' }
+  ],
+  'McLaren': [
+    { name: '720S', img: 'images/mclaren/720s/1.jpg', tags: ['Gasoline', 'Rear-Wheel Drive', 'Automatic'], accel: '2.9 s', accelSub: 'Acceleration 0 - 100 km/h', power: '530 kW / 720 PS', powerSub: 'Power (kW) / Power (PS)', speed: '341 km/h', speedSub: 'Top speed', consumption: 'Fuel consumption combined: 10.7 l/100 km, CO2 emissions: 249 g/km' }
+  ],
+  'Bugatti': [
+    { name: 'Tourbillon', img: 'images/bugatti/tourbillon/1.jpg', tags: ['Hybrid', 'All-Wheel Drive', 'Automatic'], accel: '2.0 s', accelSub: 'Acceleration 0 - 100 km/h', power: '1324 kW / 1800 PS', powerSub: 'Power (kW) / Power (PS)', speed: '445 km/h', speedSub: 'Top speed', consumption: 'Fuel consumption combined: N/A, CO2 emissions: N/A' },
+    { name: 'Chiron', img: 'images/bugatti/chiron/1.jpg', tags: ['Gasoline', 'All-Wheel Drive', 'Automatic'], accel: '2.4 s', accelSub: 'Acceleration 0 - 100 km/h', power: '1103 kW / 1500 PS', powerSub: 'Power (kW) / Power (PS)', speed: '420 km/h', speedSub: 'Top speed (Governed)', consumption: 'Fuel consumption combined: 22.5 l/100 km, CO2 emissions: 516 g/km' }
+  ],
+  'Aston Martin': [
+    { name: 'Vantage', img: 'images/aston-martin/vantage/1.jpg', tags: ['Gasoline', 'Rear-Wheel Drive', 'Automatic'], accel: '3.6 s', accelSub: 'Acceleration 0 - 100 km/h', power: '375 kW / 510 PS', powerSub: 'Power (kW) / Power (PS)', speed: '314 km/h', speedSub: 'Top speed', consumption: 'Fuel consumption combined: 10.5 l/100 km, CO2 emissions: 245 g/km' },
+    { name: 'DB12', img: 'images/aston-martin/db12/1.jpg', tags: ['Gasoline', 'Rear-Wheel Drive', 'Automatic'], accel: '3.6 s', accelSub: 'Acceleration 0 - 100 km/h', power: '500 kW / 680 PS', powerSub: 'Power (kW) / Power (PS)', speed: '325 km/h', speedSub: 'Top speed', consumption: 'Fuel consumption combined: 12.2 l/100 km, CO2 emissions: 278 g/km' },
+    { name: 'DBX', img: 'images/aston-martin/dbx707/1.jpg', tags: ['Gasoline', 'All-Wheel Drive', 'Automatic'], accel: '4.5 s', accelSub: 'Acceleration 0 - 100 km/h', power: '405 kW / 550 PS', powerSub: 'Power (kW) / Power (PS)', speed: '291 km/h', speedSub: 'Top speed', consumption: 'Fuel consumption combined: 14.3 l/100 km, CO2 emissions: 323 g/km' }
+  ]
+};
+const defaultCars = [];
+const filterDefinitions = [
+  { key: 'model', title: 'Models', allLabel: 'All Models', getValue: (car) => car.name },
+  { key: 'body', title: 'Body Design', allLabel: 'Any Body Style', getValue: (car) => car.body },
+  { key: 'seats', title: 'Seats', allLabel: 'Any Seating', getValue: (car) => String(car.seats) },
+  { key: 'drive', title: 'Drive', allLabel: 'Any Drive', getValue: (car) => car.drive },
+  { key: 'fuel', title: 'Fuel Type', allLabel: 'Any Fuel', getValue: (car) => car.fuel }
+];
+function deriveBodyType(model) {
+  if (['Cullinan', 'Purosangue', 'Urus', 'G-Class', 'GLS 450d', 'DBX'].includes(model)) return 'SUV';
+  if (['Phantom', 'Ghost', 'Maybach S Class'].includes(model)) return 'Sedan';
+  return 'Coupe';
+}
+function deriveSeats(model) {
+  if (['Cullinan', 'Ghost', 'Phantom', 'Maybach S Class', 'Purosangue', 'Urus', 'G-Class', 'GLS 450d', 'DBX'].includes(model)) return 5;
+  if (model === 'DB12') return 4;
+  return 2;
+}
+function normaliseCar(car, brand) {
+  const fuel = car.tags.find((tag) => ['Gasoline', 'Diesel', 'Hybrid', 'Electric'].includes(tag)) || 'Other';
+  const drive = car.tags.find((tag) => tag.includes('Drive')) || 'Other';
+  return { ...car, brand, fuel, drive, body: deriveBodyType(car.name), seats: deriveSeats(car.name) };
+}
+document.addEventListener('DOMContentLoaded', () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const brandParam = urlParams.get('brand') || 'All';
+  const filtersRoot = document.getElementById('filtersRoot');
+  const resetFiltersBtn = document.getElementById('resetFiltersBtn');
+  const gridEl = document.getElementById('carGrid');
+  const filterState = Object.fromEntries(filterDefinitions.map(({ key }) => [key, 'All']));
+  document.getElementById('pageTitle').textContent = brandParam === 'All' ? 'Complete Collection' : `${brandParam} Model Variants`;
+  document.title = brandParam === 'All' ? 'ELITE MOTORS - Collection' : `ELITE MOTORS - ${brandParam}`;
+  let carsData = [];
+  if (brandParam === 'All') {
+    Object.keys(db).forEach((brand) => {
+      carsData = carsData.concat((db[brand] || []).map((car) => normaliseCar(car, brand)));
+    });
+  } else {
+    carsData = (db[brandParam] || defaultCars).map((car) => normaliseCar(car, brandParam));
+  }
+  function matchesFilters(car, ignoredKey = null) {
+    return filterDefinitions.every(({ key, getValue }) => key === ignoredKey || filterState[key] === 'All' || getValue(car) === filterState[key]);
+  }
+  function getOptions(definition) {
+    const values = [...new Set(carsData.map(definition.getValue))].sort((a, b) => definition.key === 'seats' ? Number(a) - Number(b) : String(a).localeCompare(String(b)));
+    return [
+      { value: 'All', label: definition.allLabel, count: carsData.filter((car) => matchesFilters(car, definition.key)).length },
+      ...values.map((value) => ({ value, label: value, count: carsData.filter((car) => matchesFilters(car, definition.key) && definition.getValue(car) === value).length }))
+    ];
+  }
+  function renderFilters() {
+    filtersRoot.innerHTML = filterDefinitions.map((definition) => `
+      <div class="filter-group">
+        <div class="filter-title">${definition.title}</div>
+        <div class="filter-options">
+          ${getOptions(definition).map((option) => `
+            <label class="f-opt ${option.count === 0 ? 'disabled' : ''}">
+              <input type="radio" name="filter-${definition.key}" value="${option.value}" ${filterState[definition.key] === option.value ? 'checked' : ''} ${option.count === 0 ? 'disabled' : ''}>
+              <div class="radio-mock"></div>
+              ${option.label} <span class="f-count">(${option.count})</span>
+            </label>
+          `).join('')}
+        </div>
+      </div>
+    `).join('');
+  }
+  function renderCars(cars) {
+    if (!cars.length) {
+      gridEl.innerHTML = '<p style="color:var(--m);font-size:12px;letter-spacing:.1em;margin-top:20px;">No models match the current filter selection.</p>';
+      return;
+    }
+    gridEl.innerHTML = cars.map((car) => `
+      <div class="car-row">
+        <div class="car-img-wrap">
+          <img src="${car.img}" alt="${car.brand} ${car.name}" loading="lazy">
+        </div>
+        <div class="car-desc-wrap">
+          <div class="cc-tags">
+            <span class="cc-tag">${car.fuel}</span>
+            <span class="cc-tag">${car.drive}</span>
+            <span class="cc-tag">${car.body}</span>
+            <span class="cc-tag">${car.seats} Seats</span>
+          </div>
+          <h3 class="cc-name">${car.name}</h3>
+          <div class="cc-specs">
+            <div class="spec-item"><span class="spec-val">${car.accel}</span><span class="spec-lbl">${car.accelSub}</span></div>
+            <div class="spec-item"><span class="spec-val">${car.power}</span><span class="spec-lbl">${car.powerSub}</span></div>
+            <div class="spec-item"><span class="spec-val">${car.speed}</span><span class="spec-lbl">${car.speedSub}</span></div>
+          </div>
+          <div class="cc-footer">${car.consumption}</div>
+          <button class="btn-select" onclick="buyCar('${car.brand}', '${car.name}')">Reserve</button>
+        </div>
+      </div>
+    `).join('');
+  }
+  function applyFilters() {
+    const filteredCars = carsData.filter((car) => matchesFilters(car));
+    renderFilters();
+    renderCars(filteredCars);
+  }
+  filtersRoot.addEventListener('change', (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLInputElement)) return;
+    filterState[target.name.replace('filter-', '')] = target.value;
+    applyFilters();
+  });
+  resetFiltersBtn.addEventListener('click', () => {
+    filterDefinitions.forEach(({ key }) => {
+      filterState[key] = 'All';
+    });
+    applyFilters();
+  });
+  applyFilters();
+  const dot = document.getElementById('cur-dot');
+  const ring = document.getElementById('cur-ring');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', (event) => {
+    mx = event.clientX;
+    my = event.clientY;
+    dot.style.left = `${mx}px`;
+    dot.style.top = `${my}px`;
+  });
+  (function loop() {
+    rx += (mx - rx) * .12;
+    ry += (my - ry) * .12;
+    ring.style.left = `${rx}px`;
+    ring.style.top = `${ry}px`;
+    requestAnimationFrame(loop);
+  })();
+  document.addEventListener('mouseover', (event) => {
+    if (event.target.closest('a,button,.f-opt')) {
+      ring.classList.add('big');
+      dot.classList.add('big');
+    }
+  });
+  document.addEventListener('mouseout', (event) => {
+    if (event.target.closest('a,button,.f-opt')) {
+      ring.classList.remove('big');
+      dot.classList.remove('big');
+    }
+  });
+});
+function buyCar(brand, model) {
+  window.location.href = `index.html?brand=${encodeURIComponent(brand)}&model=${encodeURIComponent(model)}#contact`;
+}
+</script>
+</body>
+</html>

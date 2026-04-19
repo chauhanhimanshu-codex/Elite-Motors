@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Élite Motors — Admin Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0d0d;
+    --bg-card: #1a1a1a;
+    --gold: #c9a96e;
+    --gold-hover: #e8d5b0;
+    --text: #f0ece4;
+    --text-muted: #888;
+    --border: #333;
+    --danger: #e74c3c;
+    --success: #2ecc71;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Utilities */
+  .hidden { display: none !important; }
+  .btn {
+    background: var(--gold); color: #000; border: none; padding: 8px 16px;
+    font-family: inherit; font-size: 12px; font-weight: 500; cursor: pointer;
+    text-transform: uppercase; letter-spacing: 1px; transition: 0.2s; border-radius: 4px;
+  }
+  .btn:hover { background: var(--gold-hover); }
+  .btn-sm { padding: 6px 10px; font-size: 10px; }
+  .btn-danger { background: transparent; border: 1px solid var(--danger); color: var(--danger); }
+  .btn-danger:hover { background: var(--danger); color: #fff; }
+
+  /* Login Form */
+  #loginView {
+    flex: 1; display: flex; align-items: center; justify-content: center;
+  }
+  .login-box {
+    background: var(--bg-card); padding: 40px; border-radius: 8px; border: 1px solid var(--border);
+    width: 100%; max-width: 400px; text-align: center;
+  }
+  .login-box h1 { font-weight: 400; margin-bottom: 24px; color: var(--gold); }
+  .login-box input {
+    width: 100%; padding: 12px; margin-bottom: 16px; background: #000; border: 1px solid var(--border);
+    color: var(--text); font-family: inherit; border-radius: 4px;
+  }
+  .login-box button { width: 100%; padding: 12px; }
+
+  /* Dashboard */
+  #dashboardView { flex: 1; display: flex; flex-direction: column; }
+  .header {
+    display: flex; justify-content: space-between; align-items: center; padding: 20px 40px;
+    background: var(--bg-card); border-bottom: 1px solid var(--border);
+  }
+  .header h2 { font-weight: 400; letter-spacing: 2px; }
+  
+  .content { padding: 40px; }
+  .section-title { margin-bottom: 20px; font-weight: 500; }
+  
+  .table-container { width: 100%; overflow-x: auto; background: var(--bg-card); border-radius: 8px; border: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; text-align: left; }
+  th, td { padding: 16px; border-bottom: 1px solid var(--border); font-size: 14px; }
+  th { background: #111; font-weight: 500; color: var(--text-muted); text-transform: uppercase; font-size: 11px; letter-spacing: 1px; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover { background: #222; }
+
+  .status-badge {
+    padding: 4px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .st-pending { background: #f39c1233; color: #f39c12; }
+  .st-confirmed { background: #3498db33; color: #3498db; }
+  .st-completed { background: #2ecc7133; color: #2ecc71; }
+  .st-cancelled { background: #e74c3c33; color: #e74c3c; }
+
+  .actions { display: flex; gap: 8px; align-items: center; }
+  
+  .toast {
+    position: fixed; bottom: 20px; right: 20px; background: var(--bg-card); padding: 16px 24px;
+    border-left: 4px solid var(--gold); border-radius: 4px; box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    transform: translateY(100px); opacity: 0; transition: 0.3s;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+</style>
+</head>
+<body>
+
+  <!-- LOGIN VIEW -->
+  <div id="loginView">
+    <div class="login-box">
+      <h1>Admin Login</h1>
+      <form id="loginForm">
+        <input type="password" id="password" placeholder="Enter Admin Password" required>
+        <button type="submit" class="btn">Login</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- DASHBOARD VIEW -->
+  <div id="dashboardView" class="hidden">
+    <div class="header">
+      <h2>ÉLITE MOTORS <span style="color:var(--gold)">ADMIN</span></h2>
+      <button class="btn btn-danger" id="logoutBtn">Logout</button>
+    </div>
+    <div class="content">
+      <h3 class="section-title">Latest Viewing Requests</h3>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Ref</th>
+              <th>Date</th>
+              <th>Client</th>
+              <th>Contact</th>
+              <th>Car Details</th>
+              <th>Message</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="bookingsBody">
+            <!-- Rows injected here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast">Message here</div>
+
+<script>
+  // DOM Elements
+  const loginView = document.getElementById('loginView');
+  const dashboardView = document.getElementById('dashboardView');
+  const loginForm = document.getElementById('loginForm');
+  const logoutBtn = document.getElementById('logoutBtn');
+  const bookingsBody = document.getElementById('bookingsBody');
+  const toastEl = document.getElementById('toast');
+
+  // Init
+  async function init() {
+    const hasSession = await checkSession();
+    if (hasSession) {
+      showDashboard();
+    } else {
+      showLogin();
+    }
+  }
+
+  function showLogin() {
+    loginView.classList.remove('hidden');
+    dashboardView.classList.add('hidden');
+  }
+
+  function showDashboard() {
+    loginView.classList.add('hidden');
+    dashboardView.classList.remove('hidden');
+    fetchBookings();
+  }
+
+  function showToast(msg) {
+    toastEl.innerText = msg;
+    toastEl.classList.add('show');
+    setTimeout(() => toastEl.classList.remove('show'), 3000);
+  }
+
+  function handleAuthError(errMessage) {
+    const message = errMessage.toLowerCase();
+    if (message.includes('jwt expired') || message.includes('invalid token') || message.includes('unauthorized') || message.includes('unauthorised')) {
+      showToast('Session expired. Please login again.');
+      logout();
+    } else {
+      showToast(errMessage);
+    }
+  }
+
+  // API Call Wrapper
+  async function apiCall(endpoint, method = 'GET', body = null) {
+    const headers = {
+      'Content-Type': 'application/json'
+    };
+
+    const options = { method, headers, credentials: 'same-origin' };
+    if (body) options.body = JSON.stringify(body);
+
+    try {
+      const res = await fetch(endpoint, options);
+      const data = await res.json();
+      
+      if (!res.ok) {
+        handleAuthError(data.message || 'Request failed');
+        throw new Error(data.message || 'Request failed');
+      }
+      return data;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async function checkSession() {
+    try {
+      const res = await fetch('/api/admin/session', { credentials: 'same-origin' });
+      return res.ok;
+    } catch (err) {
+      return false;
+    }
+  }
+
+  // --- ACTIONS ---
+
+  loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const password = document.getElementById('password').value;
+    try {
+      await apiCall('/api/admin/login', 'POST', { password });
+      document.getElementById('password').value = '';
+      showDashboard();
+    } catch (err) {
+      // Toast already handled
+    }
+  });
+
+  logoutBtn.addEventListener('click', logout);
+
+  function logout() {
+    apiCall('/api/admin/logout', 'POST').catch(()=>{});
+    showLogin();
+  }
+
+  async function fetchBookings() {
+    try {
+      const data = await apiCall('/api/bookings');
+      renderBookings(data.bookings || []);
+    } catch(err) {
+      // Error handled
+    }
+  }
+
+  async function updateStatus(id, newStatus) {
+    try {
+      await apiCall(`/api/bookings/${id}/status`, 'PATCH', { status: newStatus });
+      showToast('Status updated to ' + newStatus);
+      fetchBookings();
+    } catch(err) {
+      // Error handled
+    }
+  }
+
+  // --- RENDER ---
+
+  function renderBookings(bookings) {
+    bookingsBody.innerHTML = '';
+    if (bookings.length === 0) {
+      bookingsBody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#666;">No bookings found.</td></tr>';
+      return;
+    }
+
+    bookings.forEach(b => {
+      const d = new Date(b.created_at);
+      const dateStr = `${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getFullYear()}`;
+      const ref = String(b.id).split('-')[0].toUpperCase().substring(0,6);
+      
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td style="color:#aaa;font-family:monospace">${ref}</td>
+        <td>${dateStr}</td>
+        <td>${b.name}</td>
+        <td><div style="margin-bottom:4px">${b.phone}</div><div style="color:var(--text-muted);font-size:12px">${b.email}</div></td>
+        <td><div style="font-weight:500">${b.brand}</div><div style="color:var(--text-muted);font-size:12px">${b.model || '-'}</div></td>
+        <td><div style="max-width:200px;font-size:11.5px;color:var(--text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${b.message ? b.message.replace(/"/g, '&quot;') : '-'}">${b.message || '-'}</div></td>
+        <td><span class="status-badge st-${b.status}">${b.status}</span></td>
+        <td class="actions">
+          ${b.status === 'pending' ? `<button class="btn btn-sm" onclick="updateStatus('${b.id}', 'confirmed')">Confirm</button>` : ''}
+          ${b.status === 'confirmed' ? `<button class="btn btn-sm" onclick="updateStatus('${b.id}', 'completed')">Complete</button>` : ''}
+          ${['pending', 'confirmed'].includes(b.status) ? `<button class="btn btn-sm btn-danger" onclick="updateStatus('${b.id}', 'cancelled')">Cancel</button>` : ''}
+        </td>
+      `;
+      bookingsBody.appendChild(tr);
+    });
+  }
+
+  init();
+
+</script>
+</body>
+</html>
