@@ -18,6 +18,7 @@
     --success: #2ecc71;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { overflow-x: hidden; }
   body {
     font-family: 'Montserrat', sans-serif;
     background: var(--bg);
@@ -25,7 +26,9 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    overflow-x: hidden;
   }
+  button, input, select, textarea, a { min-height: 44px; }
   
   /* Utilities */
   .hidden { display: none !important; }
@@ -66,7 +69,7 @@
   .section-title { margin-bottom: 20px; font-weight: 500; }
   
   .table-container { width: 100%; overflow-x: auto; background: var(--bg-card); border-radius: 8px; border: 1px solid var(--border); }
-  table { width: 100%; border-collapse: collapse; text-align: left; }
+  table { width: 100%; min-width: 920px; border-collapse: collapse; text-align: left; }
   th, td { padding: 16px; border-bottom: 1px solid var(--border); font-size: 14px; }
   th { background: #111; font-weight: 500; color: var(--text-muted); text-transform: uppercase; font-size: 11px; letter-spacing: 1px; }
   tr:last-child td { border-bottom: none; }
@@ -88,6 +91,39 @@
     transform: translateY(100px); opacity: 0; transition: 0.3s;
   }
   .toast.show { transform: translateY(0); opacity: 1; }
+
+  /* RESPONSIVE BREAKPOINTS
+     Keeps the desktop data table intact while improving tablet/mobile spacing and touch targets. */
+  @media (max-width: 1024px) {
+    .header { padding: 18px 28px; }
+    .content { padding: 28px; }
+    th, td { padding: 14px 12px; }
+  }
+
+  @media (min-width: 481px) and (max-width: 768px) {
+    .login-box { max-width: 440px; margin: 0 24px; }
+    .header { align-items: flex-start; gap: 16px; }
+    .header h2 { font-size: 18px; line-height: 1.4; }
+    .content { padding: 24px; }
+    .table-container { border-radius: 6px; }
+    .actions { flex-wrap: wrap; }
+  }
+
+  @media (max-width: 480px) {
+    #loginView { padding: 18px; }
+    .login-box { padding: 28px 20px; }
+    .login-box h1 { font-size: 24px; }
+    .header { flex-direction: column; align-items: stretch; padding: 18px; gap: 14px; }
+    .header h2 { font-size: 16px; line-height: 1.5; letter-spacing: 1.4px; }
+    .header .btn { width: 100%; }
+    .content { padding: 18px; }
+    .section-title { font-size: 16px; line-height: 1.4; }
+    .table-container { border-radius: 6px; }
+    th, td { padding: 12px 10px; font-size: 12px; }
+    .actions { flex-direction: column; align-items: stretch; }
+    .btn-sm { width: 100%; }
+    .toast { left: 18px; right: 18px; bottom: 18px; }
+  }
 </style>
 </head>
 <body>

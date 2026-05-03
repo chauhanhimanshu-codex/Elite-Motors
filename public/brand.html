@@ -15,6 +15,9 @@
 }
 html{scroll-behavior:auto;overflow-x:hidden}
 body{background:var(--bg);color:var(--w);font-family:'Montserrat',sans-serif;font-weight:300;overflow-x:hidden;cursor:none}
+img,video,canvas,svg{max-width:100%;height:auto}
+a,button,input,select,textarea{min-height:44px}
+button,a{touch-action:manipulation}
 ::-webkit-scrollbar{width:2px}
 ::-webkit-scrollbar-track{background:#000}
 ::-webkit-scrollbar-thumb{background:var(--gold3)}
@@ -23,7 +26,7 @@ header{background:rgba(5,5,5,.88);backdrop-filter:blur(28px);border-bottom:1px s
 .nav-logo b{color:var(--gold);font-weight:500}
 .nav-back{font-size:9.5px;letter-spacing:.3em;text-transform:uppercase;color:rgba(240,236,228,.5);text-decoration:none;display:flex;align-items:center;gap:10px;transition:color .3s}
 .nav-back:hover{color:var(--gold)}
-.container{display:flex;max-width:1600px;margin:120px auto 40px;padding:0 72px;gap:60px}
+.container{display:flex;max-width:1600px;margin:120px auto 40px;padding:0 72px;gap:60px;width:100%}
 .sidebar{width:260px;flex-shrink:0}
 .filter-group{margin-bottom:24px;border-bottom:1px solid var(--brd);padding-bottom:16px}
 .filter-title{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;display:flex;justify-content:space-between}
@@ -37,15 +40,16 @@ header{background:rgba(5,5,5,.88);backdrop-filter:blur(28px);border-bottom:1px s
 .f-opt.disabled{opacity:.45;pointer-events:none}
 .btn-reset{width:100%;padding:14px;background:transparent;border:1px solid var(--brd);color:var(--w);font-family:'Montserrat',sans-serif;font-size:9.5px;letter-spacing:.3em;text-transform:uppercase;font-weight:400;cursor:pointer;transition:all .3s}
 .btn-reset:hover{border-color:var(--gold);color:var(--bg);background:var(--gold)}
-.main-content{flex-grow:1}
+.main-content{flex:1;min-width:0}
 .page-title{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,4vw,52px);font-weight:300;letter-spacing:.02em}
+.page-header-mobile{display:none}
 .car-list{display:flex;flex-direction:column;gap:140px}
 .car-row{display:flex;align-items:center;gap:80px}
 .car-row:nth-child(even){flex-direction:row-reverse}
 .car-img-wrap{flex:0 0 55%;position:relative;overflow:hidden;height:500px}
 .car-img-wrap img{width:100%;height:100%;object-fit:cover;filter:brightness(.8) saturate(1.1);transition:transform 1.2s cubic-bezier(.16,1,.3,1),filter .8s ease;display:block}
 .car-row:hover .car-img-wrap img{transform:scale(1.06);filter:brightness(.6) saturate(1.2)}
-.car-desc-wrap{flex:1;display:flex;flex-direction:column;justify-content:center}
+.car-desc-wrap{flex:1;display:flex;flex-direction:column;justify-content:center;min-width:0}
 .cc-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
 .cc-tag{font-size:8.5px;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,169,110,.2);padding:6px 14px}
 .cc-name{font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:300;letter-spacing:.02em;margin-bottom:40px;line-height:1.1}
@@ -60,8 +64,64 @@ header{background:rgba(5,5,5,.88);backdrop-filter:blur(28px);border-bottom:1px s
 #cur-ring{width:38px;height:38px;border:1px solid rgba(201,169,110,.45);border-radius:50%;position:fixed;top:0;left:0;z-index:9998;pointer-events:none;transform:translate(-50%,-50%);transition:width .35s,height .35s,border-color .3s}
 #cur-ring.big{width:64px;height:64px;border-color:rgba(201,169,110,.8)}
 #cur-dot.big{width:0;height:0;opacity:0}
-@media(max-width:1024px){.container{flex-direction:column}.sidebar{width:100%}.car-row,.car-row:nth-child(even){flex-direction:column}.car-img-wrap{flex-basis:auto;width:100%;height:360px}.cc-specs{grid-template-columns:1fr;gap:24px}}
-@media(max-width:640px){header{padding:18px 24px}.container{margin-top:96px;padding:0 24px 24px;gap:32px}.cc-name{font-size:36px;margin-bottom:28px}.btn-select,.btn-reset{width:100%}}
+/* RESPONSIVE BREAKPOINTS
+   The listing keeps the desktop split view above 1024px, then stacks filters and model rows for tablet and mobile. */
+@media (max-width:1200px){
+  header{padding-left:42px;padding-right:42px}
+  .container{padding-left:42px;padding-right:42px;gap:42px}
+  .car-row{gap:52px}
+  .car-img-wrap{height:460px}
+  .cc-name{font-size:44px}
+}
+
+@media (min-width:769px) and (max-width:1024px){
+  header{padding:22px 32px}
+  .container{flex-direction:column;margin-top:110px;padding:0 32px 40px;gap:46px}
+  .sidebar{width:100%}
+  #filtersRoot{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 28px}
+  .filter-group{margin-bottom:0}
+  .car-list{gap:92px}
+  .car-row,.car-row:nth-child(even){flex-direction:column;align-items:stretch;gap:34px}
+  .car-img-wrap{flex-basis:auto;width:100%;height:420px}
+  .cc-specs{grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+}
+
+@media (max-width:768px){
+  body{cursor:auto}
+  #cur-dot,#cur-ring{display:none}
+  header{padding:18px 24px;gap:18px}
+  .nav-logo{font-size:17px;letter-spacing:.28em;max-width:52vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .nav-back{font-size:9px;letter-spacing:.2em;text-align:right;gap:8px}
+  .container{flex-direction:column;margin-top:96px;padding:0 24px 36px;gap:38px}
+  .page-header-mobile{display:block}
+  .main-content .page-header{display:none}
+  .sidebar{width:100%}
+  .filter-group{margin-bottom:18px}
+  .filter-options{flex-direction:row;gap:10px;overflow-x:auto;padding-bottom:8px;-webkit-overflow-scrolling:touch}
+  .f-opt{flex:0 0 auto;min-height:44px;padding-right:8px;white-space:nowrap}
+  .btn-reset,.btn-select{width:100%;min-height:48px}
+  .page-title{font-size:clamp(34px,10vw,48px);line-height:1.08}
+  .car-list{gap:70px}
+  .car-row,.car-row:nth-child(even){flex-direction:column;align-items:stretch;gap:28px}
+  .car-img-wrap{flex-basis:auto;width:100%;height:360px}
+  .cc-tags{margin-bottom:20px}
+  .cc-tag{letter-spacing:.18em}
+  .cc-name{font-size:clamp(34px,10vw,44px);margin-bottom:28px;overflow-wrap:anywhere}
+  .cc-specs{grid-template-columns:1fr;gap:22px;margin-bottom:30px;padding:24px 0}
+  .cc-footer{max-width:100%;margin-bottom:32px}
+}
+
+@media (max-width:480px){
+  header{padding:16px 18px}
+  .nav-logo{font-size:15px;letter-spacing:.22em;max-width:50vw}
+  .nav-back{font-size:8px;letter-spacing:.16em}
+  .container{margin-top:88px;padding-left:18px;padding-right:18px}
+  .car-img-wrap{height:300px}
+  .cc-tag{font-size:8px;padding:6px 10px}
+  .spec-val{font-size:18px}
+  .spec-lbl{line-height:1.5}
+  .btn-select{letter-spacing:.24em;padding-left:24px;padding-right:24px}
+}
 </style>
 </head>
 <body>
@@ -72,6 +132,9 @@ header{background:rgba(5,5,5,.88);backdrop-filter:blur(28px);border-bottom:1px s
   <a href="index.html" class="nav-back">&larr; Back to Collection</a>
 </header>
 <div class="container">
+  <div class="page-header-mobile">
+    <h1 class="page-title" id="pageTitleMobile">Brand Models</h1>
+  </div>
   <aside class="sidebar">
     <div id="filtersRoot"></div>
     <button class="btn-reset" id="resetFiltersBtn">Reset Filters</button>
@@ -153,7 +216,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const resetFiltersBtn = document.getElementById('resetFiltersBtn');
   const gridEl = document.getElementById('carGrid');
   const filterState = Object.fromEntries(filterDefinitions.map(({ key }) => [key, 'All']));
-  document.getElementById('pageTitle').textContent = brandParam === 'All' ? 'Complete Collection' : `${brandParam} Model Variants`;
+  const resolvedTitle = brandParam === 'All' ? 'Complete Collection' : `${brandParam} Model Variants`;
+  document.getElementById('pageTitle').textContent = resolvedTitle;
+  document.getElementById('pageTitleMobile').textContent = resolvedTitle;
   document.title = brandParam === 'All' ? 'ELITE MOTORS - Collection' : `ELITE MOTORS - ${brandParam}`;
   let carsData = [];
   if (brandParam === 'All') {

@@ -236,6 +236,135 @@ footer{padding:52px 72px 38px;background:#030303;border-top:1px solid var(--brd)
 .cm-msg{font-size:11.5px;letter-spacing:.08em;line-height:1.9;color:rgba(240,236,228,.5);margin-bottom:40px;white-space:pre-wrap;}
 .cm-btn{display:inline-block;background:var(--gold);color:var(--bg);border:none;padding:16px 44px;font-family:'Montserrat',sans-serif;font-size:9px;letter-spacing:.3em;text-transform:uppercase;cursor:pointer;transition:background .3s;}
 .cm-btn:hover{background:var(--gold2);}
+
+/* RESPONSIVE FOUNDATION
+   Added flexible sizing, touch targets, and overflow guards without changing the desktop art direction. */
+img,video,canvas,svg{max-width:100%;height:auto}
+a,button,input,select,textarea{min-height:44px}
+button,a{touch-action:manipulation}
+.nav-toggle{display:none;width:44px;height:44px;border:1px solid var(--brd);background:rgba(5,5,5,.35);color:var(--w);align-items:center;justify-content:center;gap:4px;flex-direction:column;cursor:pointer;z-index:601}
+.nav-toggle span{display:block;width:18px;height:1px;background:currentColor;transition:transform .3s ease,opacity .3s ease}
+body.nav-open .nav-toggle span:nth-child(1){transform:translateY(5px) rotate(45deg)}
+body.nav-open .nav-toggle span:nth-child(2){opacity:0}
+body.nav-open .nav-toggle span:nth-child(3){transform:translateY(-5px) rotate(-45deg)}
+
+/* RESPONSIVE BREAKPOINTS
+   Large desktop remains the source design; smaller screens progressively reduce gutters and column counts. */
+@media (max-width:1200px){
+  nav,nav.scrolled{padding-left:42px;padding-right:42px}
+  .sec,#gallery,#philosophy,#contact{padding-left:42px;padding-right:42px}
+  #collection .sh,.hscroll-track,.hs-nav{padding-left:42px;padding-right:42px}
+  .hero-body{padding-left:42px;padding-right:42px}
+  .hero-count{right:42px}
+  .hero-scroll{left:42px}
+  .car-card{flex-basis:min(380px,82vw);height:540px}
+  .contact-grid{gap:70px}
+}
+
+@media (min-width:769px) and (max-width:1024px){
+  nav,nav.scrolled{padding:22px 32px}
+  .nav-links{gap:24px}
+  .nav-cta{padding:13px 22px;letter-spacing:.22em}
+  .hero-title{font-size:clamp(64px,11vw,118px)}
+  .hero-body{max-width:760px;padding-bottom:96px}
+  .sec{padding-top:120px;padding-bottom:120px}
+  #collection,#gallery,#contact{padding-top:120px;padding-bottom:120px}
+  .brands-grid,.stats-row{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .gal-grid{grid-template-rows:420px 280px}
+  .contact-grid{grid-template-columns:minmax(0,1fr);gap:56px}
+  .ct-l p{max-width:620px}
+}
+
+@media (max-width:768px){
+  body{cursor:auto}
+  #cur-dot,#cur-ring{display:none}
+  nav,nav.scrolled{padding:16px 24px;background:rgba(5,5,5,.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--brd)}
+  .nav-logo{font-size:17px;letter-spacing:.28em;max-width:calc(100vw - 96px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .nav-toggle{display:flex}
+  .nav-links{position:fixed;top:77px;left:0;right:0;display:flex;flex-direction:column;gap:0;padding:18px 24px 24px;background:rgba(5,5,5,.96);border-bottom:1px solid var(--brd);transform:translateY(-130%);opacity:0;pointer-events:none;transition:transform .35s ease,opacity .35s ease}
+  body.nav-open .nav-links{transform:translateY(0);opacity:1;pointer-events:auto}
+  .nav-links li{border-bottom:1px solid rgba(201,169,110,.1)}
+  .nav-links li:last-child{border-bottom:0}
+  .nav-links a{display:flex;align-items:center;min-height:48px;font-size:10px;color:rgba(240,236,228,.72)}
+  .nav-cta{display:none}
+  .hero{min-height:680px;height:100svh;align-items:flex-end}
+  .hero-body{padding:0 24px 96px;max-width:100%}
+  .h-eyebrow{font-size:8.5px;letter-spacing:.32em;gap:12px;margin-bottom:20px}
+  .h-eyebrow::before{width:28px}
+  .hero-title{font-size:clamp(54px,18vw,92px);line-height:.9;margin-bottom:24px;letter-spacing:0}
+  .hero-sub{max-width:100%;font-size:11.5px;line-height:1.8;margin-bottom:34px}
+  .hero-btns{flex-direction:column;align-items:stretch;gap:16px;max-width:360px}
+  .btn-primary,.cf-submit,.btn-link{justify-content:center;text-align:center}
+  .btn-primary,.cf-submit{width:100%;padding:16px 24px}
+  .btn-link::before{width:28px}
+  .hero-count{right:24px;bottom:26px}
+  .hc-num{font-size:44px}
+  .hc-lbl{font-size:8px;letter-spacing:.28em}
+  .hero-scroll{display:none}
+  .ticker{padding:20px 0}
+  .tick-i{font-size:12px;padding:0 32px;gap:32px}
+  .sec,#gallery,#philosophy,#contact{padding:92px 24px}
+  #collection{padding:92px 0}
+  #collection .sh,.hscroll-track,.hs-nav{padding-left:24px;padding-right:24px}
+  .sh{margin-bottom:54px}
+  .s-eye{font-size:8.5px;letter-spacing:.32em;gap:12px}
+  .s-eye::before,.s-eye::after{width:24px}
+  .s-ttl{font-size:clamp(38px,11vw,62px)}
+  .hscroll-outer{overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+  .hscroll-track{width:max-content;gap:12px;transform:none!important}
+  .car-card{flex:0 0 min(82vw,360px);height:500px;scroll-snap-align:start}
+  .card-body{padding:30px 24px}
+  .hs-nav{margin-top:32px}
+  .brands-grid,.stats-row{grid-template-columns:1fr}
+  .brand-tile{padding:44px 24px}
+  .bt-name{font-size:24px}
+  .stats-row{margin-top:54px}
+  .stat-box{padding:42px 24px}
+  .stat-n{font-size:58px}
+  .gal-grid{grid-template-columns:1fr;grid-template-rows:none;gap:12px;margin-top:54px}
+  .g-item,.g-item:nth-child(1),.g-item:nth-child(2),.g-item:nth-child(3){grid-row:auto;min-height:300px;transform:translateY(28px)}
+  .g-item.vis{transform:none}
+  .g-cap{opacity:1;transform:none;font-size:20px}
+  #philosophy{padding-top:110px;padding-bottom:110px}
+  .phi-q{font-size:64px}
+  .phi-txt{font-size:clamp(28px,8vw,40px)}
+  .phi-attr{letter-spacing:.28em}
+  .contact-grid{grid-template-columns:1fr;gap:54px}
+  .ct-l h2{font-size:clamp(42px,12vw,62px)}
+  .ct-l p{max-width:100%;margin-bottom:38px}
+  .fg-phone{flex-direction:column;align-items:stretch;gap:8px}
+  .fg-phone select.country-code{width:100%}
+  .cm-box{width:calc(100vw - 48px);padding:42px 26px}
+  footer{padding:42px 24px;flex-direction:column;align-items:flex-start}
+  .ft-links{flex-wrap:wrap;gap:18px 28px}
+}
+
+@media (max-width:480px){
+  nav,nav.scrolled{padding:14px 18px}
+  .nav-logo{font-size:15px;letter-spacing:.22em}
+  .nav-links{top:73px;padding-left:18px;padding-right:18px}
+  .ld-logo{font-size:26px;letter-spacing:.42em;text-align:center}
+  .ld-track{width:min(240px,72vw)}
+  .hero{min-height:620px}
+  .hero-body{padding-left:18px;padding-right:18px;padding-bottom:92px}
+  .hero-title{font-size:clamp(48px,18vw,74px)}
+  .hero-sub{font-size:11px;letter-spacing:.08em}
+  .hero-count{display:none}
+  .sec,#gallery,#philosophy,#contact{padding-left:18px;padding-right:18px}
+  #collection .sh,.hscroll-track,.hs-nav{padding-left:18px;padding-right:18px}
+  .car-card{flex-basis:84vw;height:430px}
+  .card-model{font-size:26px}
+  .brands-grid{gap:0}
+  .brand-tile{padding:38px 18px}
+  .gal-grid{gap:10px}
+  .g-item,.g-item:nth-child(1),.g-item:nth-child(2),.g-item:nth-child(3){min-height:240px}
+  .ct-det-val{line-height:1.6}
+  .fg input,.fg select,.fg textarea{font-size:16px}
+  .cf-submit{letter-spacing:.22em}
+  .cm-title{font-size:30px}
+  .cm-msg{font-size:11px}
+  .ft-logo{font-size:17px;letter-spacing:.25em}
+}
 </style>
 </head>
 <body>
@@ -254,6 +383,9 @@ footer{padding:52px 72px 38px;background:#030303;border-top:1px solid var(--brd)
 <!-- NAV -->
 <nav id="nav">
   <a href="#home" class="nav-logo">ÉLITE <b>MOTORS</b></a>
+  <button class="nav-toggle" id="navToggle" type="button" aria-label="Toggle navigation" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
   <ul class="nav-links">
     <li><a href="brand.html?brand=All">Collection</a></li>
     <li><a href="#brands">Brands</a></li>
@@ -742,6 +874,21 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
    BOOKING FORM SUBMISSION & AUTO-SELECT
 ══════════════════════════════════════ */
 const f = document.getElementById('bookingForm');
+
+/* Mobile navigation toggle */
+const navToggle = document.getElementById('navToggle');
+if (navToggle) {
+  navToggle.addEventListener('click', () => {
+    const isOpen = document.body.classList.toggle('nav-open');
+    navToggle.setAttribute('aria-expanded', String(isOpen));
+  });
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+      document.body.classList.remove('nav-open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+}
 
 // Auto-fill logic from query parameters
 document.addEventListener('DOMContentLoaded', () => {
